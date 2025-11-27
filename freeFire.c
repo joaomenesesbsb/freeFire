@@ -34,19 +34,27 @@ void inserirItens(Item *itens, int quantidade){
     }
 }
 
-void removerItem(){
-
+int removerItemPeloNome(Item *itens, int quantidade, const char *nome){
+    for (int i = 0; i < quantidade; i++) {
+        if (strcmp(itens[i].nome, nome) == 0) {
+            // Move tudo para a esquerda
+            for (int j = i; j < quantidade - 1; j++) {
+                itens[j] = itens[j + 1];
+            }
+            // Reduzir tamanho lógico
+            (quantidade)--;
+            return 1; // sucesso - removeu apenas a primeira ocorrência
+        }
+    }
+    return 0; // nao encontrado
 }
 
-void listarItens(){
-
-}
 
 void buscarItem(){
 
 }
 
-void mostrarItens(Item *itens, int quantidade){
+void listarItens(Item *itens, int quantidade){
     if(quantidade < 10){
         //mostrar dados
         printf("\n--- Dados dos Itens ---\n");
@@ -71,8 +79,21 @@ int main(){
 
     Item *itens = malloc(quantidade * sizeof(Item));
 
-    cadastrarItens(itens,quantidade);
-    mostrarItens(itens,quantidade);
+    inserirItens(itens,quantidade);
+    listarItens(itens,quantidade);
 
+    char nomeDoItemParaRemover[30];
+    printf("Qual item que deseja remover?");
+    scanf("%19s", nomeDoItemParaRemover);
+
+   if (removerItemPeloNome(itens,quantidade, nomeDoItemParaRemover)) {
+        printf("Item removido com sucesso.\n");
+        quantidade--;
+    } else {
+        printf("Item nao encontrado.\n");
+    }
+    listarItens(itens,quantidade);
+
+    free(itens);
     return 0;
 }
