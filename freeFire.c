@@ -50,8 +50,17 @@ int removerItemPeloNome(Item *itens, int quantidade, const char *nome){
 }
 
 
-void buscarItem(){
-
+int buscarItemPeloNome(Item *itens, int quantidade, const char *nome) {
+    for (int i = 0; i < quantidade; i++) {
+        if (strcmp(itens[i].nome, nome) == 0) {
+            printf("\nItem encontrado:\n");
+            printf("Nome: %s\n", itens[i].nome);
+            printf("Tipo: %s\n", itens[i].tipo);
+            printf("Quantidade: %d\n", itens[i].quantidade);
+            return i;
+        }
+    }
+    return -1; //não encontrado
 }
 
 void listarItens(Item *itens, int quantidade){
@@ -71,9 +80,37 @@ void listarItens(Item *itens, int quantidade){
     }
 }
 
+int inserirItensParaTeste(Item *itens) {
+
+    strcpy(itens[0].nome, "AK47");
+    strcpy(itens[0].tipo, "Arma");
+    itens[0].quantidade = 1;
+
+    strcpy(itens[1].nome, "MunicaoAR");
+    strcpy(itens[1].tipo, "Municao");
+    itens[1].quantidade = 180;
+
+    strcpy(itens[2].nome, "Colete");
+    strcpy(itens[2].tipo, "Protecao");
+    itens[2].quantidade = 1;
+
+    strcpy(itens[3].nome, "Capacete");
+    strcpy(itens[3].tipo, "Protecao");
+    itens[3].quantidade = 1;
+
+    strcpy(itens[4].nome, "KitMedico");
+    strcpy(itens[4].tipo, "Cura");
+    itens[4].quantidade = 3;
+
+    return 5; // quantidade preenchida
+}
+
 int main(){
 
     int quantidade;
+    char nomeDoItemParaRemover[30];
+    char nomeDoItemParaBuscar[30];
+    
     printf("Quantos Itens deseja cadastrar?");
     scanf("%d", &quantidade);
 
@@ -82,7 +119,15 @@ int main(){
     inserirItens(itens,quantidade);
     listarItens(itens,quantidade);
 
-    char nomeDoItemParaRemover[30];
+    //    TESTE    //
+    /*
+    quantidade = 5;
+    Item *itens = malloc(quantidade * sizeof(Item));
+    inserirItensParaTeste(itens);
+    listarItens(itens,quantidade); 
+    */
+    //    FIM DO TESTE    //
+
     printf("Qual item que deseja remover?");
     scanf("%19s", nomeDoItemParaRemover);
 
@@ -92,6 +137,12 @@ int main(){
     } else {
         printf("Item nao encontrado.\n");
     }
+    listarItens(itens,quantidade);
+
+    printf("Qual item que deseja buscar?");
+    scanf("%19s", nomeDoItemParaBuscar);
+
+    buscarItemPeloNome(itens,quantidade, nomeDoItemParaBuscar);
     listarItens(itens,quantidade);
 
     free(itens);
